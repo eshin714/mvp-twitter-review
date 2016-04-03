@@ -3,9 +3,12 @@ var app = {
 
 
   init : function(){
-    $( "#target" ).on("submit", app.postUsername);
+    $( "#target" ).on("submit", function(event){
+      event.preventDefault();
+      app.postUsername();
+    });
 
-    app.getTweets();
+    // app.getTweets();
     // app.postTweets();
   },
 
@@ -16,13 +19,13 @@ var app = {
     $.ajax({
         type: 'post',
         url: 'http://localhost:8080/',
-        data: newUsername,
-        contentType: "text/plain",
+        data: JSON.stringify({username: newUsername}),
+        contentType: "application/json",
         success: function(data) {
-
+            // JSON.parse
             console.log('success');
-            console.log("this is data", data);
-            // displayTweets();
+            // console.log("this is data", data);
+            app.displayTweets(data);
         },
         error: function(){
           console.log("error")
@@ -52,9 +55,10 @@ var app = {
   },
 
   displayTweets: function(data){
-
-    for(var i = 0; i < data.length; i++){
-      $("#tweets").append("<p>" + " : " + data[i] +"</p>");
+    console.log("Here",JSON.parse(data));
+    var parsedData = JSON.parse(data);
+    for(var i = 0; i < parsedData.length; i++){
+      $("#tweets").append("<p>" + " : " + parsedData[i].text +"</p>");
   }
 
 

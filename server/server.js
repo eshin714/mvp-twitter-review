@@ -41,50 +41,64 @@ app.use(bodyParser());
 
 app.use(bodyParser.json());
 
+app.use(express.static("./client"));
 
 app.use(function(req, res, next) {
   res.header("access-control-allow-origin", "*");
   res.header("access-control-allow-methods", "GET, POST")
-  res.header("access-control-allow-headers", "Content-Type");
+  res.header("access-control-allow-headers", "Content-Type, Authorization");
   next();
 });
+// var unArray = [];
+// var name = "";
+// var tweets = [];
 
-var tweets = [];
-var name = "adidas";
-var username = { screen_name: name, count: '30'};
-var unArray = [];
-
-twitter.getUserTimeline(username, error, function(data) {
-  dataObj = JSON.parse(data);
-  console.log(success(dataObj))
-  for(var i = 0; i < dataObj.length; i++) {
-  tweets.push(dataObj[i].text);
-  // unArray.push(dataObj[i].user.name)
-
-  console.log(tweets);
-}
-});
-
-app.get("/", function(req, res){
-  // res.writeHead(200, headers);
-  res.send(tweets);
+// console.log(name);
+// console.log("This is the username", username);
 
 
-  // res.render(tweets);
-  console.log("hello");
-});
+// app.get("/", function(req, res){
+//   // res.writeHead(200, headers);
+//   res.send(tweets);
+
+
+//   // res.render(tweets);
+//   console.log("hello");
+// });
 
 app.post("/", function(req, res) {
-  console.log(req.body.username);
-  // res.send('You sent the name "' + req.body.name + '".');
-  // res.end(tweets);
+  var name = req.body.username;
+  console.log(name);
 
-  // unArray.push(req.body.username);
-  console.log("DId this work?");
-  console.log(unArray);
+  // twitter.getUserTimeline({ screen_name : name, count: '25'}, error, function (data) {
+  //   var parsData = JSON.parse(data);
+  //   console.log("Success");
+  //   for (var i = 0; i<parsData.length; i++){
+  //   console.log('data', parsData[i].text);
+  //   }
+  // })
+
+  twitter.getUserTimeline({ screen_name : name, count: '25'}, error, function (data) {
+    var parsData = JSON.parse(data);
+    console.log("Success");
+    console.log("FJDKLSJFDLSJFLDSJFLDSJKLF",data)
+    // return parsData;
+
+      res.send(data);
+
+      // return parsData[i].text;
+
+  }
+  )
+
+
+
 
 });
 
+
+
+  // unArray.push(dataObj[i].user.name)
 
 
 
