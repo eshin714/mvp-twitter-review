@@ -5,6 +5,7 @@ var app = {
   init : function(){
     $( "#target" ).on("submit", function(event){
       event.preventDefault();
+      app.clearData();
       app.postUsername();
     });
 
@@ -35,30 +36,31 @@ var app = {
 
   },
 
-  getTweets : function(){
-    console.log("getTweets ran");
-    $.ajax({
-        type: 'get',
-        url: 'http://localhost:8080/',
-        success: function(data) {
-            console.log('success');
-            console.log(data);
-            app.displayTweets(data);
-        },
-        error: function(){
-          console.log("error")
-        }
-      })
+  // getTweets : function(){
+  //   console.log("getTweets ran");
+  //   $.ajax({
+  //       type: 'get',
+  //       url: 'http://localhost:8080/',
+  //       success: function(data) {
+  //           console.log('success');
+  //           console.log(data);
+  //           app.displayTweets(data);
+  //       },
+  //       error: function(){
+  //         console.log("error")
+  //       }
+  //     })
 
-
-
+  clearData: function() {
+    $("p").remove();
   },
 
-  displayTweets: function(data){
+
+  displayTweets : function(data){
     console.log("Here",JSON.parse(data));
     var parsedData = JSON.parse(data);
     for(var i = 0; i < parsedData.length; i++){
-      $("#tweets").append("<p>" + " : " + parsedData[i].text +"</p>");
+      $("#tweets").append("<p>" + parsedData[i].user.name + " : " + parsedData[i].text +"</p>");
   }
 
 
